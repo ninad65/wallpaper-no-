@@ -1,0 +1,20 @@
+# Exact path to your image in C:\New folder
+$ImagePath = "C:\New folder\daniel-leone-v7daTKlZzaw-unsplash.jpg"
+
+# Registry paths for enforcement
+$SystemPolicies = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+$ActiveDesktop   = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop"
+
+# 1. Set image path and fit style
+If (!(Test-Path $SystemPolicies)) { New-Item -Path $SystemPolicies -Force | Out-Null }
+Set-ItemProperty -Path $SystemPolicies -Name "Wallpaper" -Value $ImagePath -Type String
+Set-ItemProperty -Path $SystemPolicies -Name "WallpaperStyle" -Value "10" -Type String  # 10 = Fill
+
+# 2. Block changing wallpaper in settings
+If (!(Test-Path $ActiveDesktop)) { New-Item -Path $ActiveDesktop -Force | Out-Null }
+Set-ItemProperty -Path $ActiveDesktop -Name "NoChangingWallPaper" -Value 1 -Type DWord
+
+# 3. Refresh desktop system settings
+RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters
+
+Write-Host "Desktop background updated and locked successfully!" -ForegroundColor Green
