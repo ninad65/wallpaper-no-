@@ -1,0 +1,12 @@
+# 1. Unlock Desktop Background
+Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "Wallpaper" -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "WallpaperStyle" -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop" -Name "NoChangingWallPaper" -ErrorAction SilentlyContinue
+
+# 2. Unlock Lock Screen Wallpaper
+Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name "LockScreenImage" -ErrorAction SilentlyContinue
+
+# 3. Refresh desktop system settings
+RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters
+
+Write-Host "Desktop and Lock Screen backgrounds unlocked successfully!" -ForegroundColor Green
